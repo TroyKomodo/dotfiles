@@ -31,5 +31,12 @@ in {
 
   xdg.configFile."mimeapps.list".force = true;
 
+  dconf.settings = {
+    "org/gnome/desktop/wm/keybindings" = {
+      switch-windows = ["<Alt>Tab"];
+      switch-applications = ["<Super>Tab"];
+    };
+  };
+
   home.stateVersion = "25.11";
 }

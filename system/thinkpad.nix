@@ -63,7 +63,7 @@
     "/boot" = {
       device = "/dev/disk/by-label/BOOT";
       fsType = "vfat";
-      options = [ "umask=0077" ];
+      options = ["umask=0077"];
     };
   };
 
