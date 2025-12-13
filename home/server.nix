@@ -2,8 +2,7 @@
   config,
   pkgs,
   ...
-}: 
-let
+}: let
   variables = import ../variables.nix;
 in {
   imports = [

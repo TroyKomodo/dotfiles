@@ -4,9 +4,7 @@
   timeZone,
   config,
   ...
-}: 
-
-let
+}: let
   variables = import ../variables.nix;
 in {
   nixpkgs.config.allowUnfree = true;

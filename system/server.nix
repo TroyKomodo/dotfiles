@@ -3,8 +3,7 @@
   lib,
   pkgs,
   ...
-}: 
-let
+}: let
   variables = import ../variables.nix;
 in {
   # Hardware detection

@@ -2,8 +2,7 @@
   config,
   pkgs,
   ...
-}: 
-let
+}: let
   variables = import ../variables.nix;
 in {
   imports = [
@@ -18,6 +17,7 @@ in {
   home.packages = with pkgs; [
     chromium
     code-cursor
+    vesktop
   ];
 
   home.stateVersion = "25.11";

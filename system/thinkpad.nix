@@ -10,9 +10,39 @@
     bluetooth.enable = true;
   };
 
+  # For Audio
+  security.rtkit.enable = true;
+  services.pipewire = {
+    enable = true;
+    alsa.enable = true;
+    alsa.support32Bit = true;
+    pulse.enable = true;
+  };
+
+  # For some reason the audio compressors are enabled by default
+  # and it causes random audio distortion. This is a workaround
+  # to disable them.
+  systemd.user.services.disable-audio-compressors = {
+    description = "Disable audio compressors";
+    wantedBy = ["pipewire.service"];
+    after = ["sound.target"];
+    script = ''
+      sleep 2
+      ${pkgs.alsa-utils}/bin/amixer -c 0 sset 'RX_COMP1' off
+      ${pkgs.alsa-utils}/bin/amixer -c 0 sset 'RX_COMP2' off
+      ${pkgs.alsa-utils}/bin/amixer -c 0 sset 'WSA WSA_COMP1' off
+      ${pkgs.alsa-utils}/bin/amixer -c 0 sset 'WSA WSA_COMP2' off
+    '';
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+    };
+  };
+
   # Boot
   boot = {
     loader.systemd-boot.enable = true;
+    loader.systemd-boot.configurationLimit = 20;
 
     initrd.systemd = {
       enable = true;
@@ -83,6 +113,8 @@
       neovim
       git
       chromium
+      alsa-utils
+      alsa-ucm-conf
     ];
 
     # Remove GNOME bloatware
