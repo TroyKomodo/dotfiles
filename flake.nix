@@ -33,7 +33,7 @@
     };
 
     nix-your-shell = {
-      url = "github:TroyKomodo/nix-your-shell/ee29fa89aea1ad067ee0d215ba8798b3e6fcc4b8";
+      url = "github:TroyKomodo/nix-your-shell/35bc4e53828cf7c0bee2fd00d7d7235d94f254b5";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };

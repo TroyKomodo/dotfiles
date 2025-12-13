@@ -212,17 +212,17 @@
         "systems": "systems"
       },
       "locked": {
-        "lastModified": 1765660250,
-        "narHash": "sha256-Mh0ImTYZRD6gM1ShTgnqSPAZQiWLbLnEfk4DvU5FaNM=",
+        "lastModified": 1765661262,
+        "narHash": "sha256-KJ18CjoGDyhG1e2MYOCJg6IZwYLimQxTiD5B1LhVYE8=",
         "owner": "TroyKomodo",
         "repo": "nix-your-shell",
-        "rev": "ee29fa89aea1ad067ee0d215ba8798b3e6fcc4b8",
+        "rev": "35bc4e53828cf7c0bee2fd00d7d7235d94f254b5",
         "type": "github"
       },
       "original": {
         "owner": "TroyKomodo",
         "repo": "nix-your-shell",
-        "rev": "ee29fa89aea1ad067ee0d215ba8798b3e6fcc4b8",
+        "rev": "35bc4e53828cf7c0bee2fd00d7d7235d94f254b5",
         "type": "github"
       }
     },
