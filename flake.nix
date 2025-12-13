@@ -31,6 +31,11 @@
       url = "github:Mic92/envfs/1.1.0";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    nix-your-shell = {
+      url = "github:TroyKomodo/nix-your-shell/ee29fa89aea1ad067ee0d215ba8798b3e6fcc4b8";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = {
@@ -42,15 +47,26 @@
     vscode-server,
     nix-ld,
     envfs,
+    nix-your-shell,
+    ...
   }: let
     mkSystem = {
       buildName,
       system,
       timeZone,
       extraModules ? [],
-    }:
+    }: let
+      pkgs = import nixpkgs {
+        inherit system;
+        config.allowUnfree = true;
+        overlays = [
+          nix-your-shell.overlays.default
+        ];
+      };
+    in
       nixpkgs.lib.nixosSystem {
         inherit system;
+        pkgs = pkgs;
         specialArgs = {inherit buildName timeZone;};
         modules =
           [

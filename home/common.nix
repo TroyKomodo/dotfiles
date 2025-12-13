@@ -58,7 +58,7 @@ in {
 
     # Shell helpers
     direnv
-    any-nix-shell
+    nix-your-shell
   ];
 
   home.file.".ssh/id_ed25519.pub".text = variables.sshKeyPub;
@@ -134,8 +134,7 @@ in {
       # Disable greeting
       set fish_greeting
 
-      # Shell integrations
-      ${pkgs.any-nix-shell}/bin/any-nix-shell fish --info-right | source
+      ${pkgs.nix-your-shell}/bin/nix-your-shell fish --info-right | source
     '';
 
     shellAliases = {
