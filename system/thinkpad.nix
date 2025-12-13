@@ -110,8 +110,6 @@
     # System packages (minimal - most should be in home-manager)
     systemPackages = with pkgs; [
       neovim
-      git
-      chromium
       alsa-utils
       alsa-ucm-conf
     ];

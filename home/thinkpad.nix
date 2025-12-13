@@ -20,5 +20,16 @@ in {
     vesktop
   ];
 
+  xdg.mimeApps = {
+    enable = true;
+    defaultApplications = {
+      "text/html" = "chromium.desktop";
+      "x-scheme-handler/http" = "chromium.desktop";
+      "x-scheme-handler/https" = "chromium.desktop";
+    };
+  };
+
+  xdg.configFile."mimeapps.list".force = true;
+
   home.stateVersion = "25.11";
 }
