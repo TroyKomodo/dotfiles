@@ -48,6 +48,7 @@ in {
     enable = true;
     # Manual assembly - see https://std.rocks/gnulinux_mdadm_uefi.html
     mdadmConf = ''
+      MAILADDR="nobody@nowhere"
       ARRAY /dev/md0 metadata=1.2 UUID=2a4d8a6f:3c6b02d7:3f22d8e0:3b2b18bd
       ARRAY <ignore> metadata=1.0 UUID=157660cb:85532742:c1a1af01:b6df6973
     '';
@@ -172,4 +173,6 @@ in {
 
   # Add docker group to user (user is defined in common.nix)
   users.users.${variables.username}.extraGroups = lib.mkAfter ["docker"];
+
+  system.stateVersion = "25.05";
 }

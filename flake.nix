@@ -18,7 +18,7 @@
     };
 
     vscode-server = {
-      url = "github:msteen/nixos-vscode-server";
+      url = "github:nix-community/nixos-vscode-server";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -74,7 +74,7 @@
         buildName = "server";
         system = "x86_64-linux";
         timeZone = "America/Toronto";
-        extraModules = [vscode-server.nixosModules.vscode-server];
+        extraModules = [vscode-server.nixosModules.default];
       };
     };
 
