@@ -68,6 +68,17 @@ in {
       switch-applications = ["<Super>Tab"];
     };
 
+    "org/gnome/shell/keybindings" = {
+      show-screenshot-ui = [ "<Super><Shift>s" ];
+      # Disable defaults if they conflict
+      screenshot = [ ];
+    };
+
+    "org/gnome/settings-daemon/plugins/media-keys" = {
+      screenshot = [ ];
+      area-screenshot = [ ];
+    };
+
     "org/gnome/desktop/wm/preferences" = {
       theme = theme;
     };
