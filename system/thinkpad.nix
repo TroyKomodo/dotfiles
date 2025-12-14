@@ -78,6 +78,7 @@
   # GNOME Desktop Environment
   services = {
     xserver.enable = true;
+    xserver.excludePackages = [ pkgs.xterm ];
 
     displayManager.gdm = {
       enable = true;
@@ -111,7 +112,13 @@
       neovim
       alsa-utils
       alsa-ucm-conf
+      ghostty
+      xdg-terminal-exec
     ];
+
+    etc."xdg/xdg-terminals.list".text = ''
+      ghostty
+    '';
 
     # Remove GNOME bloatware
     gnome.excludePackages = with pkgs; [
@@ -136,6 +143,8 @@
       gnome-characters
       gnome-font-viewer
       gnome-connections
+      gnome-terminal
+      gnome-console
       snapshot
 
       # Games

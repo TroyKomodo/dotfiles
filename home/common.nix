@@ -59,6 +59,10 @@ in {
     # Shell helpers
     direnv
     nix-your-shell
+
+    # System info
+    fastfetch
+    hyfetch
   ];
 
   home.file.".ssh/id_ed25519.pub".text = variables.sshKeyPub;

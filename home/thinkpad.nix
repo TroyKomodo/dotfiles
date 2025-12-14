@@ -91,6 +91,11 @@ in {
       name = theme;
     };
 
+    "org/gnome/desktop/default-applications/terminal" = {
+      exec = "ghostty";
+      exec-arg = "-e";
+    };
+
     "org/gnome/shell" = {
       enabled-extensions = [
         pkgs.gnomeExtensions.user-themes.extensionUuid
