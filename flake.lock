@@ -160,6 +160,27 @@
         "type": "github"
       }
     },
+    "gfn-electron": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1765688260,
+        "narHash": "sha256-FKky+EqcLyJMq0EwL/WM8oxK06YhdUw+XENI4DzNRpI=",
+        "owner": "troykomodo",
+        "repo": "gfn-electron",
+        "rev": "5fd24add653f0b32d837020b14aa87adf4d2be19",
+        "type": "github"
+      },
+      "original": {
+        "owner": "troykomodo",
+        "repo": "gfn-electron",
+        "rev": "5fd24add653f0b32d837020b14aa87adf4d2be19",
+        "type": "github"
+      }
+    },
     "home-manager": {
       "inputs": {
         "nixpkgs": [
@@ -242,14 +263,32 @@
         "type": "github"
       }
     },
+    "nixpkgs-unstable": {
+      "locked": {
+        "lastModified": 1765472234,
+        "narHash": "sha256-9VvC20PJPsleGMewwcWYKGzDIyjckEz8uWmT0vCDYK0=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "2fbfb1d73d239d2402a8fe03963e37aab15abe8b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "alejandra": "alejandra",
         "envfs": "envfs",
+        "gfn-electron": "gfn-electron",
         "home-manager": "home-manager",
         "nix-ld": "nix-ld",
         "nix-your-shell": "nix-your-shell",
         "nixpkgs": "nixpkgs",
+        "nixpkgs-unstable": "nixpkgs-unstable",
         "vscode-server": "vscode-server",
         "x1e-nixos-config": "x1e-nixos-config"
       }

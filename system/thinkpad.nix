@@ -19,15 +19,14 @@
     pulse.enable = true;
   };
 
-  # For some reason the audio compressors are enabled by default
-  # and it causes random audio distortion. This is a workaround
-  # to disable them.
   systemd.user.services.disable-audio-compressors = {
     description = "Disable audio compressors";
-    wantedBy = ["pipewire.service"];
-    after = ["sound.target"];
+    wantedBy = ["graphical-session.target"];
+    partOf = ["graphical-session.target"];
+    after = ["wireplumber.service"];
+    wants = ["wireplumber.service"];
     script = ''
-      sleep 2
+      sleep 5
       ${pkgs.alsa-utils}/bin/amixer -c 0 sset 'RX_COMP1' off
       ${pkgs.alsa-utils}/bin/amixer -c 0 sset 'RX_COMP2' off
       ${pkgs.alsa-utils}/bin/amixer -c 0 sset 'WSA WSA_COMP1' off

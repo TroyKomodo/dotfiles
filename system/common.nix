@@ -14,6 +14,7 @@ in {
 
   home-manager.useGlobalPkgs = true;
   home-manager.useUserPackages = true;
+  home-manager.backupFileExtension = "bak";
 
   services.tailscale.enable = true;
 

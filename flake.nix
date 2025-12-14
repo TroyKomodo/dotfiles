@@ -1,6 +1,7 @@
 {
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
+    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
 
     x1e-nixos-config = {
       url = "github:kuruczgy/x1e-nixos-config/v6.18";
@@ -36,6 +37,11 @@
       url = "github:TroyKomodo/nix-your-shell/35bc4e53828cf7c0bee2fd00d7d7235d94f254b5";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    gfn-electron = {
+      url = "github:troykomodo/gfn-electron/5fd24add653f0b32d837020b14aa87adf4d2be19";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = {
@@ -48,6 +54,8 @@
     nix-ld,
     envfs,
     nix-your-shell,
+    nixpkgs-unstable,
+    gfn-electron,
     ...
   }: let
     mkSystem = {
@@ -56,11 +64,20 @@
       timeZone,
       extraModules ? [],
     }: let
+      pkgs-unstable = import nixpkgs-unstable {
+        inherit system;
+        config.allowUnfree = true;
+      };
       pkgs = import nixpkgs {
         inherit system;
         config.allowUnfree = true;
         overlays = [
           nix-your-shell.overlays.default
+          (final: prev: {
+            psst = pkgs-unstable.psst.overrideAttrs {
+              postInstall = "";
+            };
+          })
         ];
       };
     in
@@ -84,7 +101,14 @@
         buildName = "thinkpad";
         system = "aarch64-linux";
         timeZone = "America/Denver";
-        extraModules = [x1e-nixos-config.nixosModules.x1e];
+        extraModules = [
+          x1e-nixos-config.nixosModules.x1e
+          {
+            home-manager.sharedModules = [
+              gfn-electron.homeManagerModules.default
+            ];
+          }
+        ];
       };
       server = mkSystem {
         buildName = "server";
