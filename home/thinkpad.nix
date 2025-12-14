@@ -29,6 +29,7 @@ in {
     gnomeExtensions.user-themes
     papirus-icon-theme
     nightfox-gtk-theme
+    obs-studio
   ];
 
   xdg.desktopEntries.psst = {
@@ -97,9 +98,19 @@ in {
     };
 
     "org/gnome/shell" = {
+      disable-user-extensions = false;
       enabled-extensions = [
         pkgs.gnomeExtensions.user-themes.extensionUuid
+        "blur-my-shell@aunetx"
+        "just-perfection-desktop@just-perfection"
+        "no-overview@fthx"
+        "openbar@neuromorph"
+        "tailscale-status@maxgallup.github.com"
       ];
+    };
+
+    "org/gnome/desktop/sound" = {
+      event-sounds = false;
     };
   };
 
