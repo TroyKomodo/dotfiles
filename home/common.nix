@@ -126,6 +126,8 @@ in {
   # SSH agent service
   services.ssh-agent.enable = true;
 
+  programs.nix-index.enable = true;
+
   # Fish shell
   programs.fish = {
     enable = true;
