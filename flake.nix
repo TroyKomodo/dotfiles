@@ -42,6 +42,11 @@
       url = "github:troykomodo/gfn-electron/5fd24add653f0b32d837020b14aa87adf4d2be19";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    nix-index-database = {
+      url = "github:nix-community/nix-index-database";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = {
@@ -56,6 +61,7 @@
     nix-your-shell,
     nixpkgs-unstable,
     gfn-electron,
+    nix-index-database,
     ...
   }: let
     mkSystem = {
@@ -90,6 +96,11 @@
             home-manager.nixosModules.home-manager
             nix-ld.nixosModules.nix-ld
             envfs.nixosModules.envfs
+            {
+              home-manager.sharedModules = [
+                nix-index-database.homeModules.default
+              ];
+            }
             ./system/common.nix
             ./system/${buildName}.nix
           ]

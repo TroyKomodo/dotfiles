@@ -36,7 +36,7 @@ in {
     exec = "${pkgs.psst}/bin/psst-gui";
     icon = "spotify";
     terminal = false;
-    categories = [ "Audio" "Music" "Player" ];
+    categories = ["Audio" "Music" "Player"];
     settings = {
       StartupWMClass = "psst-gui";
     };
@@ -69,14 +69,14 @@ in {
     };
 
     "org/gnome/shell/keybindings" = {
-      show-screenshot-ui = [ "<Super><Shift>s" ];
+      show-screenshot-ui = ["<Super><Shift>s"];
       # Disable defaults if they conflict
-      screenshot = [ ];
+      screenshot = [];
     };
 
     "org/gnome/settings-daemon/plugins/media-keys" = {
-      screenshot = [ ];
-      area-screenshot = [ ];
+      screenshot = [];
+      area-screenshot = [];
     };
 
     "org/gnome/desktop/wm/preferences" = {
@@ -92,7 +92,7 @@ in {
     };
 
     "org/gnome/shell" = {
-      enabled-extensions = [ 
+      enabled-extensions = [
         pkgs.gnomeExtensions.user-themes.extensionUuid
       ];
     };
