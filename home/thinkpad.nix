@@ -108,6 +108,12 @@ in {
         "no-overview@fthx"
         "openbar@neuromorph"
         "tailscale-status@maxgallup.github.com"
+        "Bluetooth-Battery-Meter@maniacx.github.com"
+        "color-picker@tuberry"
+        "do-not-disturb-while-screen-sharing-or-recording@marcinjahn.com"
+        "quick-settings-audio-panel@rayzeq.github.io"
+        "status-area-horizontal-spacing@mathematical.coffee.gmail.com"
+        "steal-my-focus-window@steal-my-focus-window"
       ];
     };
 
