@@ -1,6 +1,7 @@
 {
   config,
   pkgs,
+  technorino,
   ...
 }: let
   variables = import ../variables.nix;
@@ -30,6 +31,7 @@ in {
     papirus-icon-theme
     nightfox-gtk-theme
     obs-studio
+    technorino.packages.${stdenv.hostPlatform.system}.package
   ];
 
   xdg.desktopEntries.psst = {

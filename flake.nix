@@ -47,6 +47,11 @@
       url = "github:nix-community/nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    technorino = {
+      url = "git+https://github.com/2547techno/technorino?submodules=1";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = {
@@ -62,6 +67,7 @@
     nixpkgs-unstable,
     gfn-electron,
     nix-index-database,
+    technorino,
     ...
   }: let
     mkSystem = {
@@ -115,6 +121,7 @@
         extraModules = [
           x1e-nixos-config.nixosModules.x1e
           {
+            home-manager.extraSpecialArgs = {inherit technorino;};
             home-manager.sharedModules = [
               gfn-electron.homeManagerModules.default
             ];

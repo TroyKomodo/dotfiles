@@ -62,6 +62,5 @@ in {
   ];
 
   networking.hostName = "${variables.username}-${buildName}";
-  home-manager.extraSpecialArgs = {};
   home-manager.users.${variables.username} = import ../home/${buildName}.nix;
 }
