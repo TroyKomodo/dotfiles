@@ -63,4 +63,5 @@ in {
 
   networking.hostName = "${variables.username}-${buildName}";
   home-manager.users.${variables.username} = import ../home/${buildName}.nix;
+  nix.settings.trusted-users = [ "@wheel" "root" ];
 }

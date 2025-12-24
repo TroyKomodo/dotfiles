@@ -160,27 +160,6 @@
         "type": "github"
       }
     },
-    "gfn-electron": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1765688260,
-        "narHash": "sha256-FKky+EqcLyJMq0EwL/WM8oxK06YhdUw+XENI4DzNRpI=",
-        "owner": "troykomodo",
-        "repo": "gfn-electron",
-        "rev": "5fd24add653f0b32d837020b14aa87adf4d2be19",
-        "type": "github"
-      },
-      "original": {
-        "owner": "troykomodo",
-        "repo": "gfn-electron",
-        "rev": "5fd24add653f0b32d837020b14aa87adf4d2be19",
-        "type": "github"
-      }
-    },
     "home-manager": {
       "inputs": {
         "nixpkgs": [
@@ -253,17 +232,17 @@
         "systems": "systems"
       },
       "locked": {
-        "lastModified": 1765661262,
-        "narHash": "sha256-KJ18CjoGDyhG1e2MYOCJg6IZwYLimQxTiD5B1LhVYE8=",
+        "lastModified": 1766608892,
+        "narHash": "sha256-Pf3+xal8OB7m4Q1ih5oq0RUpLW/SIhZ91KCp556bb7c=",
         "owner": "TroyKomodo",
         "repo": "nix-your-shell",
-        "rev": "35bc4e53828cf7c0bee2fd00d7d7235d94f254b5",
+        "rev": "0c45887935c3507b2ab00b64dac61311fac01d4f",
         "type": "github"
       },
       "original": {
         "owner": "TroyKomodo",
         "repo": "nix-your-shell",
-        "rev": "35bc4e53828cf7c0bee2fd00d7d7235d94f254b5",
+        "rev": "0c45887935c3507b2ab00b64dac61311fac01d4f",
         "type": "github"
       }
     },
@@ -303,7 +282,6 @@
       "inputs": {
         "alejandra": "alejandra",
         "envfs": "envfs",
-        "gfn-electron": "gfn-electron",
         "home-manager": "home-manager",
         "nix-index-database": "nix-index-database",
         "nix-ld": "nix-ld",

@@ -2,7 +2,9 @@
   pkgs,
   lib,
   ...
-}: {
+}: let
+  variables = import ../variables.nix;
+in {
   # Hardware
   hardware = {
     lenovo-thinkpad-t14s.enable = true;
@@ -78,7 +80,7 @@
   # GNOME Desktop Environment
   services = {
     xserver.enable = true;
-    xserver.excludePackages = [ pkgs.xterm ];
+    xserver.excludePackages = [pkgs.xterm];
 
     displayManager.gdm = {
       enable = true;
@@ -161,6 +163,8 @@
     ];
   };
 
+  users.users.${variables.username}.extraGroups = lib.mkAfter ["docker" "video"];
+
   # PAM configuration for GNOME Keyring
   security.pam.services.gdm.enableGnomeKeyring = true;
 
@@ -168,12 +172,6 @@
   services = {
     power-profiles-daemon.enable = false;
     tlp.enable = true;
-  };
-
-  # Build settings
-  nix.settings = {
-    max-jobs = 4;
-    cores = 4;
   };
 
   system.stateVersion = "25.11";

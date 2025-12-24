@@ -34,12 +34,7 @@
     };
 
     nix-your-shell = {
-      url = "github:TroyKomodo/nix-your-shell/35bc4e53828cf7c0bee2fd00d7d7235d94f254b5";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    gfn-electron = {
-      url = "github:troykomodo/gfn-electron/5fd24add653f0b32d837020b14aa87adf4d2be19";
+      url = "github:TroyKomodo/nix-your-shell/0c45887935c3507b2ab00b64dac61311fac01d4f";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -65,7 +60,6 @@
     envfs,
     nix-your-shell,
     nixpkgs-unstable,
-    gfn-electron,
     nix-index-database,
     technorino,
     ...
@@ -90,12 +84,20 @@
               postInstall = "";
             };
           })
+          (final: prev: {
+            tlp = prev.tlp.overrideAttrs (oldAttrs: rec {
+              version = "1.9.0";
+              src = oldAttrs.src.override {
+                rev = "1.9.0";
+                hash = "sha256-aM/4+cgtUe6qv3MNT4moXvNzqG5gKvwMbg14L8ifWlc=";
+              };
+            });
+          })
         ];
       };
     in
       nixpkgs.lib.nixosSystem {
-        inherit system;
-        pkgs = pkgs;
+        inherit system pkgs;
         specialArgs = {inherit buildName timeZone;};
         modules =
           [
@@ -122,9 +124,7 @@
           x1e-nixos-config.nixosModules.x1e
           {
             home-manager.extraSpecialArgs = {inherit technorino;};
-            home-manager.sharedModules = [
-              gfn-electron.homeManagerModules.default
-            ];
+            home-manager.sharedModules = [];
           }
         ];
       };

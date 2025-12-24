@@ -17,8 +17,6 @@ in {
     components = ["pkcs11" "secrets" "ssh"];
   };
 
-  programs.gfn-electron.enable = true;
-
   home.packages = with pkgs; [
     (pkgs.chromium.override {
       commandLineArgs = "--force-dark-mode";

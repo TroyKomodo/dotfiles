@@ -43,6 +43,8 @@ in {
     gh # GitHub CLI
     mergiraf
     neovim
+    rustup
+    gcc15
 
     # System tools
     iperf3
