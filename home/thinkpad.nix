@@ -20,10 +20,10 @@ in {
   home.packages = with pkgs; [
     (pkgs.chromium.override {
       commandLineArgs = "--force-dark-mode";
+      enableWideVine = true;
     })
     code-cursor
     vesktop
-    psst
     gnome-tweaks
     gnomeExtensions.user-themes
     papirus-icon-theme
@@ -31,17 +31,6 @@ in {
     obs-studio
     technorino.packages.${stdenv.hostPlatform.system}.package
   ];
-
-  xdg.desktopEntries.psst = {
-    name = "Spotify";
-    exec = "${pkgs.psst}/bin/psst-gui";
-    icon = "spotify";
-    terminal = false;
-    categories = ["Audio" "Music" "Player"];
-    settings = {
-      StartupWMClass = "psst-gui";
-    };
-  };
 
   gtk = {
     enable = true;

@@ -79,20 +79,6 @@
         config.allowUnfree = true;
         overlays = [
           nix-your-shell.overlays.default
-          (final: prev: {
-            psst = pkgs-unstable.psst.overrideAttrs {
-              postInstall = "";
-            };
-          })
-          (final: prev: {
-            tlp = prev.tlp.overrideAttrs (oldAttrs: rec {
-              version = "1.9.0";
-              src = oldAttrs.src.override {
-                rev = "1.9.0";
-                hash = "sha256-aM/4+cgtUe6qv3MNT4moXvNzqG5gKvwMbg14L8ifWlc=";
-              };
-            });
-          })
         ];
       };
     in
