@@ -67,7 +67,6 @@
     mkSystem = {
       buildName,
       system,
-      timeZone,
       extraModules ? [],
     }: let
       pkgs-unstable = import nixpkgs-unstable {
@@ -93,7 +92,7 @@
     in
       nixpkgs.lib.nixosSystem {
         inherit system pkgs;
-        specialArgs = {inherit buildName timeZone;};
+        specialArgs = {inherit buildName;};
         modules =
           [
             home-manager.nixosModules.home-manager
@@ -114,7 +113,6 @@
       thinkpad = mkSystem {
         buildName = "thinkpad";
         system = "aarch64-linux";
-        timeZone = "America/Denver";
         extraModules = [
           x1e-nixos-config.nixosModules.x1e
           {
@@ -126,7 +124,6 @@
       server = mkSystem {
         buildName = "server";
         system = "x86_64-linux";
-        timeZone = "America/Toronto";
         extraModules = [vscode-server.nixosModules.default];
       };
     };

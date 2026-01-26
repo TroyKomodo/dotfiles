@@ -1,8 +1,8 @@
 {
   pkgs,
   buildName,
-  timeZone,
   config,
+  lib,
   ...
 }: let
   variables = import ../variables.nix;
@@ -45,7 +45,7 @@ in {
     settings.PermitRootLogin = "no";
   };
 
-  time.timeZone = timeZone;
+  time.timeZone = lib.mkForce null;
 
   environment.sessionVariables = {
     ENVFS_RESOLVE_ALWAYS = "1";

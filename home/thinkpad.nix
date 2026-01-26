@@ -108,6 +108,14 @@ in {
     "org/gnome/desktop/sound" = {
       event-sounds = false;
     };
+    
+    "org/gnome/desktop/datetime" = { 
+      automatic-timezone = true; 
+    };
+
+    "org/gnome/system/location" = {
+      enabled = true;
+    };
   };
 
   home.stateVersion = "25.11";
