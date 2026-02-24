@@ -20,6 +20,11 @@ in {
 
   networking.nameservers = ["1.1.1.1" "1.0.0.1"];
 
+  networking.firewall = {
+    trustedInterfaces = [ "tailscale0" ];
+    allowedUDPPorts = [ 41641 1900 5351 ];
+  };
+
   services.resolved = {
     enable = true;
     dnssec = "true";

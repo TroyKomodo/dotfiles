@@ -33,6 +33,8 @@ in {
       ${pkgs.alsa-utils}/bin/amixer -c X1E80100LENOVOT sset 'RX_COMP2' off
       ${pkgs.alsa-utils}/bin/amixer -c X1E80100LENOVOT sset 'WSA WSA_COMP1' off
       ${pkgs.alsa-utils}/bin/amixer -c X1E80100LENOVOT sset 'WSA WSA_COMP2' off
+      ${pkgs.alsa-utils}/bin/amixer -c X1E80100LENOVOT sset 'SpkrLeft COMP' off
+      ${pkgs.alsa-utils}/bin/amixer -c X1E80100LENOVOT sset 'SpkrRight COMP' off
     '';
     serviceConfig = {
       Type = "oneshot";
