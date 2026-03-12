@@ -4,6 +4,7 @@
   ...
 }: let
   variables = import ../variables.nix;
+  timezone = "Africa/Johannesburg";
 in {
   # Hardware
   hardware = {
@@ -19,6 +20,21 @@ in {
     alsa.enable = true;
     alsa.support32Bit = true;
     pulse.enable = true;
+  };
+
+  # For Printing
+  services.avahi = {
+    enable = true;
+    nssmdns4 = true;
+    openFirewall = true;
+  };
+
+  services.printing = {
+    enable = true;
+    drivers = with pkgs; [
+      cups-filters
+      cups-browsed
+    ];
   };
 
   systemd.user.services.disable-audio-compressors = {
@@ -124,8 +140,8 @@ in {
     sessionVariables = {
       NIXOS_OZONE_WL = "1"; # Enable Wayland for Electron apps
       XDG_RUNTIME_DIR = "/run/user/$UID";
-      # Required for GNOME to detect fingerprint reader
       XDG_DATA_DIRS = ["${pkgs.gdm}/share/gsettings-schemas/gdm-${pkgs.gdm.version}"];
+      TZ = timezone;
     };
 
     # System packages (minimal - most should be in home-manager)
@@ -182,10 +198,19 @@ in {
     ];
   };
 
+  time.timeZone = timezone;
+
   users.users.${variables.username}.extraGroups = lib.mkAfter ["docker" "video"];
 
   # PAM configuration for GNOME Keyring
   security.pam.services.gdm.enableGnomeKeyring = true;
+
+  # Swap (zram - compressed RAM swap)
+  zramSwap = {
+    enable = true;
+    algorithm = "zstd";
+    memoryPercent = 50;
+  };
 
   # Power management
   services = {
