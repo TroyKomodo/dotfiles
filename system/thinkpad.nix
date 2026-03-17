@@ -37,6 +37,16 @@ in {
     ];
   };
 
+  # Disable touchpad while typing
+  services.libinput = {
+    enable = true;
+    touchpad = {
+      tapping = false;
+      disableWhileTyping = true;
+    };
+  };
+
+
   systemd.user.services.disable-audio-compressors = {
     description = "Disable audio compressors";
     wantedBy = ["graphical-session.target"];
@@ -151,6 +161,7 @@ in {
       alsa-ucm-conf
       ghostty
       xdg-terminal-exec
+      libinput
     ];
 
     etc."xdg/xdg-terminals.list".text = ''
