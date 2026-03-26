@@ -34,9 +34,30 @@ in {
     dnsovertls = "opportunistic";
   };
 
+    # Docker (rootless)
+  virtualisation.docker.rootless = {
+    enable = true;
+    setSocketVariable = true;
+    daemon.settings = {
+      dns = config.networking.nameservers;
+      registry-mirrors = ["https://mirror.gcr.io"];
+      features = {
+        buildkit = true;
+        containerd-snapshotter = true;
+        cdi = true;
+      };
+    };
+  };
+
+  # Docker environment variables (set globally)
+  environment.sessionVariables = {
+    DOCKER_HOST = "unix://$XDG_RUNTIME_DIR/docker.sock";
+    CONTAINERD_ADDRESS = "$XDG_RUNTIME_DIR/docker/containerd/containerd.sock";
+  };
+
   users.users.${variables.username} = {
     isNormalUser = true;
-    extraGroups = ["wheel" "networkmanager"];
+    extraGroups = ["wheel" "networkmanager" "docker"];
     openssh.authorizedKeys.keys = [
       variables.sshKeyPub
     ];

@@ -157,29 +157,5 @@ in {
     };
   };
 
-  # Docker (rootless)
-  virtualisation.docker.rootless = {
-    enable = true;
-    setSocketVariable = true;
-    daemon.settings = {
-      dns = config.networking.nameservers;
-      registry-mirrors = ["https://mirror.gcr.io"];
-      features = {
-        buildkit = true;
-        containerd-snapshotter = true;
-        cdi = true;
-      };
-    };
-  };
-
-  # Docker environment variables (set globally)
-  environment.sessionVariables = {
-    DOCKER_HOST = "unix://$XDG_RUNTIME_DIR/docker.sock";
-    CONTAINERD_ADDRESS = "$XDG_RUNTIME_DIR/docker/containerd/containerd.sock";
-  };
-
-  # Add docker group to user (user is defined in common.nix)
-  users.users.${variables.username}.extraGroups = lib.mkAfter ["docker"];
-
   system.stateVersion = "25.05";
 }
