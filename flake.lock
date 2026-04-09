@@ -217,13 +217,15 @@
       "locked": {
         "lastModified": 1775619372,
         "narHash": "sha256-bONRPjhk5OZdnkQZexZNJzlvwIPg31Gy7fNiwGoX3BQ=",
+        "owner": "lix-project",
+        "repo": "lix",
         "rev": "bc9fb560ac2d36cd317a856ee96785ea2055fbff",
-        "type": "tarball",
-        "url": "https://git.lix.systems/api/v1/repos/lix-project/lix/archive/bc9fb560ac2d36cd317a856ee96785ea2055fbff.tar.gz?rev=bc9fb560ac2d36cd317a856ee96785ea2055fbff"
+        "type": "github"
       },
       "original": {
-        "type": "tarball",
-        "url": "https://git.lix.systems/lix-project/lix/archive/main.tar.gz"
+        "owner": "lix-project",
+        "repo": "lix",
+        "type": "github"
       }
     },
     "lix-module": {
@@ -240,13 +242,15 @@
       "locked": {
         "lastModified": 1773460763,
         "narHash": "sha256-y9kC3ff89btXS8RD6pAtM50g0qtsim1I8HXBtgSqdbI=",
+        "ref": "refs/heads/main",
         "rev": "5e56f5a973e24292b125dca9e9d506b0a91d6903",
-        "type": "tarball",
-        "url": "https://git.lix.systems/api/v1/repos/lix-project/nixos-module/archive/5e56f5a973e24292b125dca9e9d506b0a91d6903.tar.gz?rev=5e56f5a973e24292b125dca9e9d506b0a91d6903"
+        "revCount": 180,
+        "type": "git",
+        "url": "https://git.lix.systems/lix-project/nixos-module"
       },
       "original": {
-        "type": "tarball",
-        "url": "https://git.lix.systems/lix-project/nixos-module/archive/main.tar.gz"
+        "type": "git",
+        "url": "https://git.lix.systems/lix-project/nixos-module"
       }
     },
     "nix-index-database": {
