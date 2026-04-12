@@ -6,12 +6,12 @@
     mkdir -p $themeDir
 
     # Pull each file from wherever it lives
-    cp ${./static/login.plymouth} $themeDir/login.plymouth
-    cp ${./static/login.script}   $themeDir/login.script
-    cp ${./wallpaper.jpg} $themeDir/wallpaper.png
+    cp ${../static/login.plymouth} $themeDir/login.plymouth
+    cp ${../static/login.script}   $themeDir/login.script
+    cp ${../static/wallpaper.jpg} $themeDir/wallpaper.png
 
     # Mask the square avatar into a circle
-    magick ${./pfp.jpg} \
+    magick ${../static/pfp.jpg} \
       \( +clone -alpha extract \
          -draw "fill black polygon 0,0 0,%[fx:h/2] %[fx:w/2],0 fill white circle %[fx:w/2],%[fx:h/2] %[fx:w/2],0" \
          \( +clone -flip \) -compose Multiply -composite \
