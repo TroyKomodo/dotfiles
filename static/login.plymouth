@@ -1,8 +1,9 @@
 [Plymouth Theme]
 Name=Login
-Description=Login-screen style theme with avatar and LUKS prompt
+Description=Custom login splash
 ModuleName=script
 
 [script]
 ImageDir=/etc/plymouth-login
 ScriptFile=/etc/plymouth-login/login.script
+Font=Sans 14
