@@ -35,5 +35,10 @@
     fsType = "xfs";
   };
 
+  fileSystems."/boot/efi1" = {
+    device = "/dev/disk/by-label/efi1";
+    fsType = "fat32";
+  };
+
   system.stateVersion = "25.11";
 }
