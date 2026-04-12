@@ -24,8 +24,10 @@ prompt_label = NULL;
 fun refresh_prompt_text(text) {
     prompt_label = NULL;
     prompt_img = Image.Text(text, 1, 1, 1);
-    prompt_label = Sprite(prompt_img);
-    prompt_label.SetX((screen_width - prompt_img.GetWidth()) / 2);
+    scale = 2.5;
+    scaled = prompt_img.Scale(prompt_img.GetWidth() * scale, prompt_img.GetHeight() * scale);
+    prompt_label = Sprite(scaled);
+    prompt_label.SetX((screen_width - scaled.GetWidth()) / 2);
     prompt_label.SetY((screen_height / 2) + short_side * 0.12);
     prompt_label.SetZ(20);
 }
