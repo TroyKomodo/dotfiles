@@ -8,7 +8,7 @@
     # Pull each file from wherever it lives
     cp ${../static/login.plymouth} $themeDir/login.plymouth
     cp ${../static/login.script}   $themeDir/login.script
-    cp ${../static/wallpaper.jpg} $themeDir/wallpaper.png
+    magick ${../static/wallpaper.jpg} $themeDir/wallpaper.png
 
     # Mask the square avatar into a circle
     magick ${../static/pfp.jpg} \
