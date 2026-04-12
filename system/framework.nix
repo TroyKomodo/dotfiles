@@ -8,12 +8,17 @@
     cp ${../static/login.plymouth} $themeDir/login.plymouth
     cp ${../static/login.script}   $themeDir/login.script
 
-    # Wallpaper: cover-fit to panel, blurred, slightly darkened, real PNG
+    # Clear wallpaper (idle mode with snow)
+    magick ${../static/wallpaper.jpg} \
+      -resize 2560x1600^ -gravity center -extent 2560x1600 \
+      $themeDir/wallpaper.png
+
+    # Blurred + darkened wallpaper (password mode)
     magick ${../static/wallpaper.jpg} \
       -resize 2560x1600^ -gravity center -extent 2560x1600 \
       -blur 0x20 \
       -brightness-contrast -15x0 \
-      $themeDir/wallpaper.png
+      $themeDir/wallpaper-blur.png
 
     # Circular avatar
     magick ${../static/pfp.jpg} \
@@ -24,9 +29,14 @@
       \) -alpha off -compose CopyOpacity -composite \
       $themeDir/avatar.png
 
-    # Password bullet (small white circle)
+    # Password bullet
     magick -size 24x24 xc:none -fill white -draw "circle 12,12 12,2" \
       $themeDir/bullet.png
+
+    # Snowflake (soft white dot)
+    magick -size 16x16 xc:none -fill white -draw "circle 8,8 8,3" \
+      -blur 0x1.5 \
+      $themeDir/snow.png
 
     substituteInPlace $themeDir/login.plymouth \
       --replace /etc/plymouth-login $themeDir

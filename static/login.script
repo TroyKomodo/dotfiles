@@ -4,13 +4,19 @@ screen_height = Window.GetHeight();
 if (screen_width < screen_height) short_side = screen_width;
 else                              short_side = screen_height;
 
-// ---------- wallpaper (pre-sized in the derivation) ----------
-wallpaper_sprite = Sprite(Image("wallpaper.png"));
-wallpaper_sprite.SetX(0);
-wallpaper_sprite.SetY(0);
-wallpaper_sprite.SetZ(-100);
+// ---------- two wallpapers ----------
+wallpaper_clear_sprite = Sprite(Image("wallpaper.png"));
+wallpaper_clear_sprite.SetX(0);
+wallpaper_clear_sprite.SetY(0);
+wallpaper_clear_sprite.SetZ(-100);
 
-// ---------- avatar ----------
+wallpaper_blur_sprite = Sprite(Image("wallpaper-blur.png"));
+wallpaper_blur_sprite.SetX(0);
+wallpaper_blur_sprite.SetY(0);
+wallpaper_blur_sprite.SetZ(-90);
+wallpaper_blur_sprite.SetOpacity(0);  // hidden by default
+
+// ---------- avatar (hidden until password asked) ----------
 avatar_image  = Image("avatar.png");
 avatar_size   = short_side * 0.18;
 avatar_scaled = avatar_image.Scale(avatar_size, avatar_size);
@@ -18,8 +24,53 @@ avatar_sprite = Sprite(avatar_scaled);
 avatar_sprite.SetX((screen_width  - avatar_size) / 2);
 avatar_sprite.SetY((screen_height - avatar_size) / 2 - short_side * 0.08);
 avatar_sprite.SetZ(10);
+avatar_sprite.SetOpacity(0);
 
-// ---------- prompt label ----------
+// ---------- snow ----------
+// Pre-create a pool of snowflake sprites and recycle them.
+snow_count = 80;
+snow_img = Image("snow.png");
+snow_sprites = [];
+snow_x = [];
+snow_y = [];
+snow_vy = [];      // fall speed (px per tick)
+snow_vx = [];      // drift speed
+snow_size = [];    // scale factor
+
+// Simple pseudo-random: Plymouth has Math.Random() returning 0..1
+for (i = 0; i < snow_count; i++) {
+    sz = 0.5 + Math.Random() * 1.2;
+    flake_scaled = snow_img.Scale(snow_img.GetWidth() * sz, snow_img.GetHeight() * sz);
+    s = Sprite(flake_scaled);
+    s.SetZ(5);
+    snow_sprites[i] = s;
+    snow_x[i]  = Math.Random() * screen_width;
+    snow_y[i]  = Math.Random() * screen_height;
+    snow_vy[i] = 0.5 + Math.Random() * 1.5;
+    snow_vx[i] = (Math.Random() - 0.5) * 0.6;
+    snow_size[i] = sz;
+    s.SetX(snow_x[i]);
+    s.SetY(snow_y[i]);
+}
+
+// Mode: 0 = idle (snow + clear bg), 1 = password (blur + avatar + prompt)
+mode = 0;
+
+fun set_mode_idle() {
+    mode = 0;
+    wallpaper_blur_sprite.SetOpacity(0);
+    avatar_sprite.SetOpacity(0);
+    for (i = 0; i < snow_count; i++) snow_sprites[i].SetOpacity(1);
+}
+
+fun set_mode_password() {
+    mode = 1;
+    wallpaper_blur_sprite.SetOpacity(1);
+    avatar_sprite.SetOpacity(1);
+    for (i = 0; i < snow_count; i++) snow_sprites[i].SetOpacity(0);
+}
+
+// ---------- prompt label (scaled up for readability) ----------
 prompt_label = NULL;
 fun refresh_prompt_text(text) {
     prompt_label = NULL;
@@ -62,8 +113,9 @@ fun display_message_callback(text) {
     message_sprite = NULL;
     if (text == "") return;
     msg_img = Image.Text(text, 1, 0.6, 0.6);
-    message_sprite = Sprite(msg_img);
-    message_sprite.SetX((screen_width - msg_img.GetWidth()) / 2);
+    scaled_msg = msg_img.Scale(msg_img.GetWidth() * 1.5, msg_img.GetHeight() * 1.5);
+    message_sprite = Sprite(scaled_msg);
+    message_sprite.SetX((screen_width - scaled_msg.GetWidth()) / 2);
     message_sprite.SetY((screen_height / 2) + short_side * 0.26);
     message_sprite.SetZ(20);
 }
@@ -74,8 +126,9 @@ fun hide_message_callback(text) {
 }
 Plymouth.SetHideMessageFunction(hide_message_callback);
 
-// ---------- password prompt ----------
+// ---------- password callbacks ----------
 fun display_password_callback(prompt, bullet_count) {
+    set_mode_password();
     if (prompt == "") refresh_prompt_text("Enter passphrase");
     else              refresh_prompt_text(prompt);
     show_bullets(bullet_count);
@@ -85,5 +138,27 @@ Plymouth.SetDisplayPasswordFunction(display_password_callback);
 fun display_normal_callback() {
     prompt_label = NULL;
     show_bullets(0);
+    set_mode_idle();
 }
 Plymouth.SetDisplayNormalFunction(display_normal_callback);
+
+// ---------- refresh: animate snow while idle ----------
+fun refresh_callback() {
+    if (mode != 0) return;
+    for (i = 0; i < snow_count; i++) {
+        snow_y[i] = snow_y[i] + snow_vy[i];
+        snow_x[i] = snow_x[i] + snow_vx[i];
+        if (snow_y[i] > screen_height) {
+            snow_y[i] = -10;
+            snow_x[i] = Math.Random() * screen_width;
+        }
+        if (snow_x[i] < -10) snow_x[i] = screen_width + 10;
+        if (snow_x[i] > screen_width + 10) snow_x[i] = -10;
+        snow_sprites[i].SetX(snow_x[i]);
+        snow_sprites[i].SetY(snow_y[i]);
+    }
+}
+Plymouth.SetRefreshFunction(refresh_callback);
+
+// Start in idle mode
+set_mode_idle();
