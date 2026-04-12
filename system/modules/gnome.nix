@@ -38,12 +38,10 @@ in {
       enable = true;
       wayland = cfg.wayland;
 
-      autoLogin =
-        lib.mkIf cfg.autoLoginUser
-        != null {
-          enable = true;
-          user = cfg.autoLoginUser;
-        };
+      autoLogin = lib.mkIf (cfg.autoLoginUser != null) {
+        enable = true;
+        user = cfg.autoLoginUser;
+      };
     };
 
     services.desktopManager.gnome = {
