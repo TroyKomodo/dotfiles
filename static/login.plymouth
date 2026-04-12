@@ -6,4 +6,5 @@ ModuleName=script
 [script]
 ImageDir=/etc/plymouth-login
 ScriptFile=/etc/plymouth-login/login.script
-Font=Sans 14
+Font=DejaVu Sans 24
+TitleFont=DejaVu Sans Bold 32

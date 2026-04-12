@@ -5,19 +5,28 @@
     themeDir=$out/share/plymouth/themes/login
     mkdir -p $themeDir
 
-    # Pull each file from wherever it lives
     cp ${../static/login.plymouth} $themeDir/login.plymouth
     cp ${../static/login.script}   $themeDir/login.script
-    magick ${../static/wallpaper.jpg} $themeDir/wallpaper.png
 
-    # Mask the square avatar into a circle
+    # Wallpaper: cover-fit to panel, blurred, slightly darkened, real PNG
+    magick ${../static/wallpaper.jpg} \
+      -resize 2560x1600^ -gravity center -extent 2560x1600 \
+      -blur 0x20 \
+      -brightness-contrast -15x0 \
+      $themeDir/wallpaper.png
+
+    # Circular avatar
     magick ${../static/pfp.jpg} \
       \( +clone -alpha extract \
-         -draw "fill black polygon 0,0 0,%[fx:h/2] %[fx:w/2],0 fill white circle %[fx:w/2],%[fx:h/2] %[fx:w/2],0" \
-         \( +clone -flip \) -compose Multiply -composite \
-         \( +clone -flop \) -compose Multiply -composite \
+        -draw "fill black polygon 0,0 0,%[fx:h/2] %[fx:w/2],0 fill white circle %[fx:w/2],%[fx:h/2] %[fx:w/2],0" \
+        \( +clone -flip \) -compose Multiply -composite \
+        \( +clone -flop \) -compose Multiply -composite \
       \) -alpha off -compose CopyOpacity -composite \
       $themeDir/avatar.png
+
+    # Password bullet (small white circle)
+    magick -size 24x24 xc:none -fill white -draw "circle 12,12 12,2" \
+      $themeDir/bullet.png
 
     substituteInPlace $themeDir/login.plymouth \
       --replace /etc/plymouth-login $themeDir
