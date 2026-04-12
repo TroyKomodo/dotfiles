@@ -5,7 +5,26 @@
   ...
 }: let
   cfg = config.modules.gnome-desktop;
-  inherit (lib.hm.gvariant) mkArray mkUint32 mkInt64 mkTuple type;
+  inherit (lib.hm.gvariant) mkArray mkUint32 mkTuple type;
+
+  # Single source of truth for GNOME shell extensions.
+  # Add or remove an extension here and it will automatically be:
+  #   - installed into home.packages
+  #   - linked into ~/.local/share/gnome-shell/extensions
+  #   - enabled in org/gnome/shell/enabled-extensions
+  shellExtensions = with pkgs.gnomeExtensions; [
+    user-themes
+    blur-my-shell
+    bluetooth-battery-meter
+    do-not-disturb-while-screen-sharing-or-recording
+    just-perfection
+    open-bar
+    no-overview
+    quick-settings-audio-panel
+    appindicator
+    tailscale-status
+    steal-my-focus-window
+  ];
 in {
   options.modules.gnome-desktop = {
     enable = lib.mkEnableOption "GNOME desktop home config";
@@ -45,41 +64,19 @@ in {
         vscode
         vesktop
         gnome-tweaks
-        gnomeExtensions.user-themes
-        gnomeExtensions.blur-my-shell
-        gnomeExtensions.bluetooth-battery-meter
-        gnomeExtensions.do-not-disturb-while-screen-sharing-or-recording
-        gnomeExtensions.just-perfection
-        gnomeExtensions.open-bar
-        gnomeExtensions.no-overview
-        gnomeExtensions.quick-settings-audio-panel
-        gnomeExtensions.appindicator
-        gnomeExtensions.tailscale-status
         papirus-icon-theme
         nightfox-gtk-theme
         obs-studio
       ]
+      ++ shellExtensions
       ++ cfg.extraPackages;
 
-    xdg.dataFile = let
-      extensionPkgs = with pkgs; [
-        gnomeExtensions.user-themes
-        gnomeExtensions.blur-my-shell
-        gnomeExtensions.bluetooth-battery-meter
-        gnomeExtensions.do-not-disturb-while-screen-sharing-or-recording
-        gnomeExtensions.just-perfection
-        gnomeExtensions.open-bar
-        gnomeExtensions.no-overview
-        gnomeExtensions.quick-settings-audio-panel
-        gnomeExtensions.appindicator
-        gnomeExtensions.tailscale-status
-      ];
-    in
-      builtins.listToAttrs (map (ext: {
-          name = "gnome-shell/extensions/${ext.extensionUuid}";
-          value = {source = "${ext}/share/gnome-shell/extensions/${ext.extensionUuid}";};
-        })
-        extensionPkgs);
+    # Link each extension into the user's gnome-shell extensions directory.
+    xdg.dataFile = builtins.listToAttrs (map (ext: {
+        name = "gnome-shell/extensions/${ext.extensionUuid}";
+        value.source = "${ext}/share/gnome-shell/extensions/${ext.extensionUuid}";
+      })
+      shellExtensions);
 
     services.gnome-keyring = {
       enable = true;
@@ -128,7 +125,7 @@ in {
         area-screenshot = [];
       };
 
-      ## --- Interface / appearance ------------------------------------------
+      ## --- Interface / appearance -------------------------------------------
       "org/gnome/desktop/interface" = {
         icon-theme = cfg.iconTheme;
         gtk-theme = cfg.theme;
@@ -142,13 +139,8 @@ in {
         show-battery-percentage = true;
       };
 
-      "org/gnome/desktop/calendar" = {
-        show-weekdate = false;
-      };
-
-      "org/gnome/shell/extensions/user-theme" = {
-        name = cfg.theme;
-      };
+      "org/gnome/desktop/calendar".show-weekdate = false;
+      "org/gnome/shell/extensions/user-theme".name = cfg.theme;
 
       ## --- Default apps -----------------------------------------------------
       "org/gnome/desktop/default-applications/terminal" = {
@@ -163,14 +155,10 @@ in {
         per-window = false;
       };
 
-      "org/gnome/desktop/peripherals/touchpad" = {
-        two-finger-scrolling-enabled = true;
-      };
+      "org/gnome/desktop/peripherals/touchpad".two-finger-scrolling-enabled = true;
 
       ## --- Notifications ----------------------------------------------------
-      "org/gnome/desktop/notifications" = {
-        show-banners = true;
-      };
+      "org/gnome/desktop/notifications".show-banners = true;
 
       ## --- Search -----------------------------------------------------------
       "org/gnome/desktop/search-providers" = {
@@ -183,9 +171,7 @@ in {
       };
 
       ## --- Session / power --------------------------------------------------
-      "org/gnome/desktop/session" = {
-        idle-delay = mkUint32 0;
-      };
+      "org/gnome/desktop/session".idle-delay = mkUint32 0;
 
       "org/gnome/settings-daemon/plugins/power" = {
         power-button-action = "interactive";
@@ -193,7 +179,7 @@ in {
         sleep-inactive-battery-timeout = 1800;
       };
 
-      ## --- Night light (disabled, manual schedule) -------------------------
+      ## --- Night light (disabled) -------------------------------------------
       "org/gnome/settings-daemon/plugins/color" = {
         night-light-enabled = false;
         night-light-schedule-automatic = false;
@@ -206,14 +192,9 @@ in {
         theme-name = "__custom";
       };
 
-      ## --- Datetime / location ---------------------------------------------
-      "org/gnome/desktop/datetime" = {
-        automatic-timezone = true;
-      };
-
-      "org/gnome/system/location" = {
-        enabled = true;
-      };
+      ## --- Datetime / location ----------------------------------------------
+      "org/gnome/desktop/datetime".automatic-timezone = true;
+      "org/gnome/system/location".enabled = true;
 
       ## --- Mutter -----------------------------------------------------------
       "org/gnome/mutter" = {
@@ -231,31 +212,16 @@ in {
       };
 
       ## --- Epiphany ---------------------------------------------------------
-      "org/gnome/epiphany" = {
-        ask-for-default = false;
-      };
+      "org/gnome/epiphany".ask-for-default = false;
 
       ## --- Tweaks -----------------------------------------------------------
-      "org/gnome/tweaks" = {
-        show-extensions-notice = false;
-      };
+      "org/gnome/tweaks".show-extensions-notice = false;
 
       ## --- Shell ------------------------------------------------------------
       "org/gnome/shell" = {
         disable-user-extensions = false;
         disabled-extensions = mkArray type.string [];
-        enabled-extensions = mkArray type.string [
-          pkgs.gnomeExtensions.user-themes.extensionUuid
-          pkgs.gnomeExtensions.blur-my-shell.extensionUuid
-          pkgs.gnomeExtensions.bluetooth-battery-meter.extensionUuid
-          pkgs.gnomeExtensions.do-not-disturb-while-screen-sharing-or-recording.extensionUuid
-          pkgs.gnomeExtensions.just-perfection.extensionUuid
-          pkgs.gnomeExtensions.open-bar.extensionUuid
-          pkgs.gnomeExtensions.no-overview.extensionUuid
-          pkgs.gnomeExtensions.quick-settings-audio-panel.extensionUuid
-          pkgs.gnomeExtensions.appindicator.extensionUuid
-          pkgs.gnomeExtensions.tailscale-status.extensionUuid
-        ];
+        enabled-extensions = map (ext: ext.extensionUuid) shellExtensions;
         favorite-apps = [
           "org.gnome.Nautilus.desktop"
           "chromium-browser.desktop"
@@ -267,9 +233,7 @@ in {
       };
 
       ## --- Blur My Shell ----------------------------------------------------
-      "org/gnome/shell/extensions/blur-my-shell" = {
-        settings-version = 2;
-      };
+      "org/gnome/shell/extensions/blur-my-shell".settings-version = 2;
 
       "org/gnome/shell/extensions/blur-my-shell/appfolder" = {
         brightness = 0.6;
@@ -285,9 +249,7 @@ in {
         pipeline = "pipeline_default_rounded";
       };
 
-      "org/gnome/shell/extensions/blur-my-shell/dash-to-panel" = {
-        blur-original-panel = true;
-      };
+      "org/gnome/shell/extensions/blur-my-shell/dash-to-panel".blur-original-panel = true;
 
       "org/gnome/shell/extensions/blur-my-shell/panel" = {
         blur = false;
@@ -304,34 +266,19 @@ in {
         sigma = 30;
       };
 
-      "org/gnome/shell/extensions/blur-my-shell/overview" = {
-        pipeline = "pipeline_default";
-      };
+      "org/gnome/shell/extensions/blur-my-shell/overview".pipeline = "pipeline_default";
+      "org/gnome/shell/extensions/blur-my-shell/lockscreen".pipeline = "pipeline_default";
+      "org/gnome/shell/extensions/blur-my-shell/screenshot".pipeline = "pipeline_default";
+      "org/gnome/shell/extensions/blur-my-shell/coverflow-alt-tab".pipeline = "pipeline_default";
 
-      "org/gnome/shell/extensions/blur-my-shell/lockscreen" = {
-        pipeline = "pipeline_default";
-      };
+      ## --- Do Not Disturb While Screen Sharing ------------------------------
+      "org/gnome/shell/extensions/do-not-disturb-while-screen-sharing-or-recording".is-wayland = true;
 
-      "org/gnome/shell/extensions/blur-my-shell/screenshot" = {
-        pipeline = "pipeline_default";
-      };
-
-      "org/gnome/shell/extensions/blur-my-shell/coverflow-alt-tab" = {
-        pipeline = "pipeline_default";
-      };
-
-      ## --- Do Not Disturb While Screen Sharing -----------------------------
-      "org/gnome/shell/extensions/do-not-disturb-while-screen-sharing-or-recording" = {
-        is-wayland = true;
-      };
-
-      ## --- libpanel (Quick Settings Audio Panel layout) --------------------
-      "org/gnome/shell/extensions/libpanel" = {
-        layout = [
-          ["quick-settings-audio-panel@rayzeq.github.io/main"]
-          ["gnome@main"]
-        ];
-      };
+      ## --- libpanel (Quick Settings Audio Panel layout) ---------------------
+      "org/gnome/shell/extensions/libpanel".layout = [
+        ["quick-settings-audio-panel@rayzeq.github.io/main"]
+        ["gnome@main"]
+      ];
 
       ## --- Open Bar ---------------------------------------------------------
       "org/gnome/shell/extensions/openbar" = {
@@ -434,10 +381,8 @@ in {
         icon-size = 0;
       };
 
-      ## --- Quick Settings Audio Panel --------------------------------------
-      "org/gnome/shell/extensions/quick-settings-audio-panel" = {
-        version = 2;
-      };
+      ## --- Quick Settings Audio Panel ---------------------------------------
+      "org/gnome/shell/extensions/quick-settings-audio-panel".version = 2;
     };
   };
 }
