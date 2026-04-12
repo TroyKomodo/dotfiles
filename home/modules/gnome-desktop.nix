@@ -411,6 +411,10 @@ in {
 
       ## --- Quick Settings Audio Panel ---------------------------------------
       "org/gnome/shell/extensions/quick-settings-audio-panel".version = 2;
+
+      "org/gnome/desktop/notifications/application/org-gnome-extensions" = {
+        enable = false;
+      };
     };
   };
 }
