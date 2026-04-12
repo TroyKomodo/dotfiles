@@ -12,13 +12,13 @@ in {
     rootMdName = lib.mkOption {
       type = lib.types.str;
       description = "Md name for root";
-      default = "/dev/md0"
+      default = "/dev/md0";
     };
 
     efiMdName = lib.mkOption {
       type = lib.types.str;
       description = "Md name for root";
-      default = "/dev/md100"
+      default = "/dev/md100";
     };
 
     efiMdUuid = lib.mkOption {
