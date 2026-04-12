@@ -37,8 +37,18 @@
 
   fileSystems."/boot/efi1" = {
     device = "/dev/disk/by-label/efi1";
-    fsType = "fat32";
+    fsType = "vfat";
   };
+
+  boot.plymouth = {
+    enable = true;
+    theme = "breeze";
+  };
+
+  boot.kernelParams = [ "quiet" "splash" "loglevel=3" "rd.udev.log_level=3" ];
+  boot.consoleLogLevel = 0;
+  boot.initrd.verbose = false;
+  boot.initrd.systemd.enable = true;
 
   system.stateVersion = "25.11";
 }
