@@ -14,6 +14,7 @@
     };
 
     hardware.enableAllFirmware = true;
+    boot.kernelPackages = lib.mkDefault pkgs.linuxPackages_latest;
 
     environment.systemPackages = with pkgs; [
       (writeShellScriptBin "nixos-rebuild-flake" ''
