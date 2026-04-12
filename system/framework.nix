@@ -14,8 +14,8 @@
     nvidia.enable = true;
     raid = {
       enable = true;
-      efiMdUuid = "1be8102d:cb57e0cc:5e8def92:a98a58e5";
       rootMdUuid = "cb37143d:d9cb8ef8:f0081246:a0716c23";
+      efiDirectories = [ "/boot/efi1" ];
     };
   };
 
