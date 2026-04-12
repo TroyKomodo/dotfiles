@@ -2,6 +2,7 @@
   config,
   lib,
   pkgs,
+  variables,
   ...
 }: let
   cfg = config.modules.gnome-desktop;
@@ -24,6 +25,7 @@
     appindicator
     tailscale-status
     steal-my-focus-window
+    status-area-horizontal-spacing
   ];
 in {
   options.modules.gnome-desktop = {
@@ -45,6 +47,12 @@ in {
       type = lib.types.str;
       default = "chromium";
       description = "Default browser desktop file name (without .desktop)";
+    };
+
+    wallpaper = lib.mkOption {
+      type = lib.types.path;
+      default = variables.wallpaper;
+      description = "Wallpaper file to use";
     };
 
     extraPackages = lib.mkOption {
@@ -102,6 +110,22 @@ in {
     xdg.configFile."gtk-4.0/settings.ini".force = true;
 
     dconf.settings = {
+      ## --- Background -------------------------------------------------------
+      "org/gnome/desktop/background" = {
+        picture-uri = "file://${cfg.wallpaper}";
+        picture-uri-dark = "file://${cfg.wallpaper}";
+        picture-options = "zoom";
+        primary-color = "#000000";
+        secondary-color = "#000000";
+      };
+
+      ## --- Lock screen background ------------------------------------------
+      "org/gnome/desktop/screensaver" = {
+        picture-uri = "file://${cfg.wallpaper}";
+        picture-options = "zoom";
+        primary-color = "#000000";
+      };
+
       ## --- Window manager ---------------------------------------------------
       "org/gnome/desktop/wm/keybindings" = {
         switch-windows = ["<Alt>Tab"];
@@ -230,6 +254,10 @@ in {
           "com.mitchellh.ghostty.desktop"
           "chrome-pjibgclleladliembfgfagdaldikeohf-Default.desktop"
         ];
+      };
+
+      "org/gnome/shell/extensions" = {
+        disable-extension-updates = true;
       };
 
       ## --- Blur My Shell ----------------------------------------------------
