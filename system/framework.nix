@@ -25,14 +25,15 @@
 
   services.fwupd.enable = true;
 
-  fileSystems."/" = {
-    device = "/dev/disk/by-label/nixos";
-    fsType = "xfs";
-  };
-
+  boot.initrd.services.lvm.enable = true;
   boot.initrd.luks.devices.cryptroot = {
     device = "/dev/md0";
     allowDiscards = true;
+  };
+
+  fileSystems."/" = {
+    device = "/dev/disk/by-label/nixos";
+    fsType = "xfs";
   };
 
   system.stateVersion = "25.11";
