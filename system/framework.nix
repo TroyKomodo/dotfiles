@@ -10,7 +10,6 @@
     networking.enable = true;
     printing.enable = true;
     swap.enable = true;
-    systemd-boot.enable = true;
     tailscale.enable = true;
     nvidia.enable = true;
     raid = {
