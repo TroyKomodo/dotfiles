@@ -58,28 +58,28 @@ while (i < snow_count) {
     i++;
 }
 
+// ---------- fade state ----------
 mode = 0;  // 0 = idle, 1 = password
+blur_opacity   = 0;
+blur_target    = 0;
+avatar_opacity = 0;
+avatar_target  = 0;
+snow_opacity   = 1;
+snow_target    = 1;
+fade_speed     = 0.04;
 
 fun set_mode_idle() {
     mode = 0;
-    wallpaper_blur.SetOpacity(0);
-    avatar_sprite.SetOpacity(0);
-    i = 0;
-    while (i < snow_count) {
-        snow_sprites[i].SetOpacity(1);
-        i++;
-    }
+    blur_target = 0;
+    avatar_target = 0;
+    snow_target = 1;
 }
 
 fun set_mode_password() {
     mode = 1;
-    wallpaper_blur.SetOpacity(1);
-    avatar_sprite.SetOpacity(1);
-    i = 0;
-    while (i < snow_count) {
-        snow_sprites[i].SetOpacity(0);
-        i++;
-    }
+    blur_target = 1;
+    avatar_target = 1;
+    snow_target = 0;
 }
 
 // ---------- prompt label ----------
@@ -95,7 +95,7 @@ fun refresh_prompt_text(text) {
     prompt_label.SetZ(20);
 }
 
-// ---------- bullets ----------
+// ---------- password dots ----------
 bullets = [];
 bullet_count_prev = 0;
 fun show_bullets(count) {
@@ -122,7 +122,7 @@ fun show_bullets(count) {
     }
 }
 
-// ---------- message ----------
+// ---------- message line ----------
 message_sprite = NULL;
 fun display_message_callback(text) {
     message_sprite = NULL;
@@ -136,7 +136,9 @@ fun display_message_callback(text) {
 }
 Plymouth.SetDisplayMessageFunction(display_message_callback);
 
-fun hide_message_callback(text) { message_sprite = NULL; }
+fun hide_message_callback(text) {
+    message_sprite = NULL;
+}
 Plymouth.SetHideMessageFunction(hide_message_callback);
 
 // ---------- password callbacks ----------
@@ -155,20 +157,61 @@ fun display_normal_callback() {
 }
 Plymouth.SetDisplayNormalFunction(display_normal_callback);
 
-// ---------- refresh: animate snow ----------
+// ---------- refresh: fades + snow animation ----------
 fun refresh_callback() {
-    if (mode != 0) return;
-    i = 0;
-    while (i < snow_count) {
-        snow_y[i] = snow_y[i] + snow_vy[i];
-        snow_x[i] = snow_x[i] + snow_vx[i];
-        if (snow_y[i] > screen_height) {
-            snow_y[i] = 0 - 20;
-            snow_x[i] = rand() * screen_width;
+    // Fade blur wallpaper
+    if (blur_opacity < blur_target) {
+        blur_opacity = blur_opacity + fade_speed;
+        if (blur_opacity > blur_target) blur_opacity = blur_target;
+    }
+    if (blur_opacity > blur_target) {
+        blur_opacity = blur_opacity - fade_speed;
+        if (blur_opacity < blur_target) blur_opacity = blur_target;
+    }
+    wallpaper_blur.SetOpacity(blur_opacity);
+
+    // Fade avatar
+    if (avatar_opacity < avatar_target) {
+        avatar_opacity = avatar_opacity + fade_speed;
+        if (avatar_opacity > avatar_target) avatar_opacity = avatar_target;
+    }
+    if (avatar_opacity > avatar_target) {
+        avatar_opacity = avatar_opacity - fade_speed;
+        if (avatar_opacity < avatar_target) avatar_opacity = avatar_target;
+    }
+    avatar_sprite.SetOpacity(avatar_opacity);
+
+    // Fade snow group opacity
+    if (snow_opacity < snow_target) {
+        snow_opacity = snow_opacity + fade_speed;
+        if (snow_opacity > snow_target) snow_opacity = snow_target;
+    }
+    if (snow_opacity > snow_target) {
+        snow_opacity = snow_opacity - fade_speed;
+        if (snow_opacity < snow_target) snow_opacity = snow_target;
+    }
+
+    // Animate + apply opacity to snow while visible
+    if (snow_opacity > 0) {
+        i = 0;
+        while (i < snow_count) {
+            snow_y[i] = snow_y[i] + snow_vy[i];
+            snow_x[i] = snow_x[i] + snow_vx[i];
+            if (snow_y[i] > screen_height) {
+                snow_y[i] = 0 - 20;
+                snow_x[i] = rand() * screen_width;
+            }
+            snow_sprites[i].SetX(snow_x[i]);
+            snow_sprites[i].SetY(snow_y[i]);
+            snow_sprites[i].SetOpacity(snow_opacity);
+            i++;
         }
-        snow_sprites[i].SetX(snow_x[i]);
-        snow_sprites[i].SetY(snow_y[i]);
-        i++;
+    } else {
+        i = 0;
+        while (i < snow_count) {
+            snow_sprites[i].SetOpacity(0);
+            i++;
+        }
     }
 }
 Plymouth.SetRefreshFunction(refresh_callback);
