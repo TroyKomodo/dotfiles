@@ -165,7 +165,6 @@ in {
 
       "org/gnome/desktop/peripherals/touchpad" = {
         two-finger-scrolling-enabled = true;
-        send-events = "disabled";
       };
 
       ## --- Notifications ----------------------------------------------------
