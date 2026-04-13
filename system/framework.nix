@@ -1,4 +1,8 @@
-{variables, ...}: {
+{
+  pkgs,
+  variables,
+  ...
+}: {
   modules = {
     audio.enable = true;
     bluetooth.enable = true;
@@ -26,6 +30,14 @@
   environment.etc."color/icc/BOE_CQ_______NE160QDM_NZ6.icc".source = ../static/BOE_CQ_______NE160QDM_NZ6.icc;
 
   services.fwupd.enable = true;
+  programs.steam.enable = true;
+  services.pcscd.enable = true;
+  services.udev.packages = [pkgs.yubikey-personalization];
+
+  services.ollama = {
+    enable = true;
+    package = pkgs.ollama-cuda;
+  };
 
   boot.initrd.services.lvm.enable = true;
   boot.initrd.luks.devices.cryptroot = {

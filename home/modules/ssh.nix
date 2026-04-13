@@ -1,4 +1,5 @@
 {
+  pkgs,
   config,
   lib,
   variables,
@@ -36,6 +37,20 @@ in {
       };
     };
 
-    services.ssh-agent.enable = true;
+    programs.gpg = {
+      enable = true;
+      scdaemonSettings = {
+        disable-ccid = true;
+      };
+    };
+
+    services.ssh-agent.enable = false;
+
+    services.gpg-agent = {
+      enable = true;
+      enableSshSupport = true;
+      enableScDaemon = true;
+      pinentryPackage = pkgs.pinentry-curses;
+    };
   };
 }

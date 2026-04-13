@@ -14,8 +14,15 @@
 
     gnome-desktop = {
       enable = true;
-      extraPackages = [
-        technorino.packages.${pkgs.stdenv.hostPlatform.system}.package
+      extraPackages = with pkgs; [
+        technorino.packages.${stdenv.hostPlatform.system}.package
+        spotify
+        vlc
+        slack
+        zoom-us
+        yubioath-flutter
+        yubikey-manager
+        yubikey-personalization
       ];
     };
   };
