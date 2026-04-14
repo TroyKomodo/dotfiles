@@ -25,7 +25,6 @@
     appindicator
     tailscale-status
     steal-my-focus-window
-    status-area-horizontal-spacing
   ];
 in {
   options.modules.gnome-desktop = {
