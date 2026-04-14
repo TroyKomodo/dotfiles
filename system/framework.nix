@@ -15,13 +15,18 @@
     };
     home-manager.enable = true;
     networking.enable = true;
+    plymouth.enable = true;
     printing.enable = true;
     swap.enable = true;
     tailscale.enable = true;
     nvidia.enable = true;
+    yubikey.enable = true;
     raid = {
       enable = true;
       rootMdUuid = "cb37143d:d9cb8ef8:f0081246:a0716c23";
+    };
+    grub = {
+      enable = true;
       efiDirectories = ["/boot/efi1"];
     };
   };
@@ -29,11 +34,7 @@
   services.colord.enable = true;
   environment.etc."color/icc/BOE_CQ_______NE160QDM_NZ6.icc".source = ../static/BOE_CQ_______NE160QDM_NZ6.icc;
 
-  services.fwupd.enable = true;
   programs.steam.enable = true;
-  services.pcscd.enable = true;
-  services.udev.packages = [pkgs.yubikey-personalization];
-  services.dbus.packages = [pkgs.gcr];
 
   services.ollama = {
     enable = true;
@@ -55,16 +56,6 @@
     device = "/dev/disk/by-label/efi1";
     fsType = "vfat";
   };
-
-  boot.plymouth = {
-    enable = true;
-    theme = "breeze";
-  };
-
-  boot.kernelParams = ["quiet" "splash" "loglevel=3" "rd.udev.log_level=3"];
-  boot.consoleLogLevel = 0;
-  boot.initrd.verbose = false;
-  boot.initrd.systemd.enable = true;
 
   system.stateVersion = "25.11";
 }

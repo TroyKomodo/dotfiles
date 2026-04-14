@@ -15,10 +15,15 @@
     gnome.enable = true;
     home-manager.enable = true;
     networking.enable = true;
+    plymouth.enable = true;
     printing.enable = true;
     swap.enable = true;
-    systemd-boot.enable = true;
     tailscale.enable = true;
+    yubikey.enable = true;
+    grub = {
+      enable = true;
+      efiDirectories = ["/boot/efi"];
+    };
   };
 
   services.fwupd.enable = true;
@@ -72,13 +77,12 @@
   };
 
   fileSystems."/" = {
-    device = "/dev/disk/by-label/PRIMARY";
+    device = "/dev/disk/by-label/nixos";
     fsType = "xfs";
   };
-  fileSystems."/boot" = {
-    device = "/dev/disk/by-label/BOOT";
+  fileSystems."/boot/efi" = {
+    device = "/dev/disk/by-label/efi";
     fsType = "vfat";
-    options = ["umask=0077"];
   };
 
   system.stateVersion = "25.11";

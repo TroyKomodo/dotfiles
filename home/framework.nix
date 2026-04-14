@@ -11,6 +11,7 @@
     direnv.enable = true;
     git.enable = true;
     ssh.enable = true;
+    yubikey.eneble = true;
 
     gnome-desktop = {
       enable = true;
@@ -20,24 +21,8 @@
         vlc
         slack
         zoom-us
-        yubioath-flutter
-        yubikey-manager
-        yubikey-personalization
       ];
     };
-  };
-
-  systemd.user.services.yubikey-touch-detector = {
-    Unit = {
-      Description = "YubiKey touch detector";
-      After = ["graphical-session.target"];
-      PartOf = ["graphical-session.target"];
-    };
-    Service = {
-      ExecStart = "${pkgs.yubikey-touch-detector}/bin/yubikey-touch-detector --libnotify";
-      Restart = "on-failure";
-    };
-    Install.WantedBy = ["graphical-session.target"];
   };
 
   programs.home-manager.enable = true;

@@ -11,6 +11,7 @@
     direnv.enable = true;
     git.enable = true;
     ssh.enable = true;
+    yubikey.enable = true;
 
     gnome-desktop = {
       enable = true;

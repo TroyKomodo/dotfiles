@@ -19,11 +19,6 @@ in {
       type = lib.types.str;
       description = "/ MD UUID";
     };
-
-    efiDirectories = lib.mkOption {
-      type = lib.types.listOf lib.types.str;
-      description = "Directories for EFI";
-    };
   };
 
   config = lib.mkIf cfg.enable {
@@ -40,22 +35,6 @@ in {
       mdadmConf = ''
         ARRAY ${cfg.rootMdName} metadata=1.2 UUID=${cfg.rootMdUuid}
       '';
-    };
-
-    # Bootloader (manually installed on each drive)
-    boot.loader = {
-      efi.canTouchEfiVariables = true;
-      grub = {
-        enable = true;
-        efiSupport = true;
-        mirroredBoots =
-          map (path: {
-            devices = ["nodev"];
-            path = path;
-            efiSysMountPoint = path;
-          })
-          cfg.efiDirectories;
-      };
     };
   };
 }
