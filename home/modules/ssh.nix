@@ -42,6 +42,9 @@ in {
 
     programs.gpg = {
       enable = true;
+      settings = {
+        keyserver = "hkps://keyserver.ubuntu.com";
+      };
       scdaemonSettings = {
         disable-ccid = true;
         pcsc-shared = true;
