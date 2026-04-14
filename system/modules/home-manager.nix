@@ -29,9 +29,15 @@ in {
       description = "Public SSH Key";
     };
 
-    extraGroups = lib.mkOption {
+    groups = lib.mkOption {
       type = lib.types.listOf lib.types.str;
       default = ["wheel" "networkmanager"];
+      description = "Extra groups for the user";
+    };
+
+    extraGroups = lib.mkOption {
+      type = lib.types.listOf lib.types.str;
+      default = [];
       description = "Extra groups for the user";
     };
   };
@@ -41,7 +47,7 @@ in {
 
     users.users.${cfg.username} = {
       isNormalUser = true;
-      extraGroups = cfg.extraGroups;
+      extraGroups = cfg.groups ++ cfg.extraGroups;
       openssh.authorizedKeys.keys = lib.mkIf (cfg.sshKeyPub != "") [
         cfg.sshKeyPub
       ];
