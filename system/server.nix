@@ -54,27 +54,27 @@
     fsType = "xfs";
   };
   fileSystems."/boot/efi1" = {
-    device = "/dev/disk/by-label/efi1";
+    device = "/dev/disk/by-label/EFI1";
     fsType = "vfat";
   };
   fileSystems."/boot/efi2" = {
-    device = "/dev/disk/by-label/efi2";
+    device = "/dev/disk/by-label/EFI2";
     fsType = "vfat";
   };
   fileSystems."/boot/efi3" = {
-    device = "/dev/disk/by-label/efi3";
+    device = "/dev/disk/by-label/EFI3";
     fsType = "vfat";
   };
   fileSystems."/boot/efi4" = {
-    device = "/dev/disk/by-label/efi4";
+    device = "/dev/disk/by-label/EFI4";
     fsType = "vfat";
   };
   fileSystems."/boot/efi5" = {
-    device = "/dev/disk/by-label/efi5";
+    device = "/dev/disk/by-label/EFI5";
     fsType = "vfat";
   };
   fileSystems."/boot/efi6" = {
-    device = "/dev/disk/by-label/efi6";
+    device = "/dev/disk/by-label/EFI6";
     fsType = "vfat";
   };
 
