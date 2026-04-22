@@ -58,6 +58,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.lix.follows = "lix";
     };
+
+    lanzaboote = {
+      url = "github:nix-community/lanzaboote";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = {
@@ -74,6 +79,7 @@
     nix-index-database,
     technorino,
     lix-module,
+    lanzaboote,
     ...
   }: let
     variables = import ./variables.nix;
@@ -94,6 +100,16 @@
           nix-your-shell.overlays.default
           (final: prev: {
             vscode = pkgs-unstable.vscode;
+            sbctl = pkgs-unstable.sbctl.overrideAttrs (old: {
+              version = "0.19-unstable-2026-xx-xx"; 
+              src = final.fetchFromGitHub {
+                owner = "troykomodo";
+                repo = "sbctl";
+                rev = "16c0ce6cebd087b30496771fe8f828db78dc05b9"; 
+                hash = "sha256-FugQYc1m4aJ86MCfbjwQ8smk0PkKrBTYw/oRLrB3LdA=";
+              };
+              vendorHash = "sha256-7BqYRPCItEvjCQ1oRuoP1BLXyZ2htXjctkMMCiskFHE=";
+            });
           })
         ];
       };
@@ -122,6 +138,7 @@
             nix-index-database.nixosModules.default
             vscode-server.nixosModules.default
             x1e-nixos-config.nixosModules.x1e
+            lanzaboote.nixosModules.lanzaboote
             {
               home-manager.useGlobalPkgs = true;
               home-manager.extraSpecialArgs = {
@@ -155,8 +172,25 @@
         buildName = "hetznerVpn";
         system = "x86_64-linux";
       };
+      liveIso = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        modules = [
+          "${nixpkgs}/nixos/modules/installer/cd-dvd/installation-cd-graphical-gnome.nix"
+          ({ pkgs, ... }: {
+            environment.systemPackages = with pkgs; [
+              vim
+              git
+              htop
+              cryptsetup
+            ];
+            services.openssh.enable = true;
+            networking.hostName = "nixos-live";
+          })
+        ];
+      };
     };
 
+    packages.x86_64-linux.iso = self.nixosConfigurations.liveIso.config.system.build.isoImage;
     formatter = alejandra.defaultPackage;
   };
 }

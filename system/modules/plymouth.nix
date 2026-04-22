@@ -12,7 +12,7 @@ in {
   config = lib.mkIf cfg.enable {
     boot.plymouth = {
       enable = true;
-      theme = "breeze";
+      theme = "bgrt";
     };
 
     boot.kernelParams = ["quiet" "splash" "loglevel=3" "rd.udev.log_level=3"];
