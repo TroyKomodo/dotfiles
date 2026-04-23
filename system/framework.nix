@@ -36,7 +36,14 @@ in {
     gnome = {
       autoLoginUser = variables.username;
     };
-    nvidia.enable = true;
+    nvidia = {
+      enable = true;
+      profile = "laptop";
+      prime = {
+        nvidiaBusId = "PCI:194:0:0";
+        amdgpuBusId = "PCI:195:0:0";
+      };
+    };
     raid = {
       enable = true;
       rootMdUuid = "cb37143d:d9cb8ef8:f0081246:a0716c23";
@@ -100,19 +107,19 @@ in {
   fileSystems."/boot/efi1" = {
     device = "/dev/disk/by-label/efi1";
     fsType = "vfat";
-    options = [ "fmask=0077" "dmask=0077" "uid=0" "gid=0" ];
+    options = ["fmask=0077" "dmask=0077" "uid=0" "gid=0"];
   };
 
   fileSystems."/boot/efi2" = {
     device = "/dev/disk/by-label/efi2";
     fsType = "vfat";
-    options = [ "fmask=0077" "dmask=0077" "uid=0" "gid=0" ];
+    options = ["fmask=0077" "dmask=0077" "uid=0" "gid=0"];
   };
 
   systemd.services.bind-boot-efi = {
     description = "Mount /boot/efi to the ESP that was actually booted";
-    wantedBy = [ "local-fs.target" ];
-    before = [ "local-fs.target" ];
+    wantedBy = ["local-fs.target"];
+    before = ["local-fs.target"];
 
     unitConfig = {
       DefaultDependencies = false;
