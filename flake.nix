@@ -148,6 +148,8 @@
                 nix-index-database.homeModules.default
                 ./home/modules
               ];
+
+              systemd.services."systemd-timedated".environment.SYSTEMD_ETC_LOCALTIME = "/etc/localtime";
             }
             ./system/modules
             ./system/${buildName}.nix

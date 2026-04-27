@@ -36,14 +36,7 @@ in {
     gnome = {
       autoLoginUser = variables.username;
     };
-    nvidia = {
-      enable = true;
-      profile = "laptop";
-      prime = {
-        nvidiaBusId = "PCI:194:0:0";
-        amdgpuBusId = "PCI:195:0:0";
-      };
-    };
+    nvidia.enable = true;
     raid = {
       enable = true;
       rootMdUuid = "cb37143d:d9cb8ef8:f0081246:a0716c23";
@@ -72,6 +65,9 @@ in {
     device = "/dev/disk/by-label/nixos";
     fsType = "xfs";
   };
+
+  services.automatic-timezoned.enable = true;
+  services.geoclue2.enable = true;
 
   boot.loader.systemd-boot.enable = lib.mkForce false;
   boot.loader.efi.canTouchEfiVariables = true;
