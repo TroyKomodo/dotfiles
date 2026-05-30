@@ -414,6 +414,16 @@ in {
       "org/gnome/desktop/notifications/application/org-gnome-extensions" = {
         enable = false;
       };
+
+      ## Improve save dialog open speed
+      "org/gnome/desktop/privacy" = {
+        recent-files-max-age = 7;
+      };
+
+      "org/freedesktop/Tracker3/Miner/Files" = {
+        ignored-directories = [ "target" "node_modules" ".git" "result" ".direnv" "po" "CVS" "build" ".cache" ];
+        throttle = 0;  # stop the battery-pause thrash
+      };
     };
   };
 }

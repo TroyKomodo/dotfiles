@@ -6,4 +6,6 @@
     git.enable = lib.mkDefault true;
     ssh.enable = lib.mkDefault true;
   };
+
+  gtk.gtk4.theme = lib.mkDefault null;
 }

@@ -38,7 +38,6 @@ in {
 
     services.displayManager.gdm = {
       enable = true;
-      wayland = cfg.wayland;
     };
 
     services.desktopManager.gnome = {
@@ -57,6 +56,7 @@ in {
         {
           XDG_RUNTIME_DIR = "/run/user/$UID";
           XDG_DATA_DIRS = ["${pkgs.gdm}/share/gsettings-schemas/gdm-${pkgs.gdm.version}"];
+          GTK_USE_PORTAL = "1";
         }
         (lib.mkIf cfg.wayland {
           NIXOS_OZONE_WL = "1";

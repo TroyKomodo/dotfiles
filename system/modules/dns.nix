@@ -31,13 +31,15 @@ in {
     networking.nameservers = cfg.nameservers;
     services.resolved = {
       enable = true;
-      dnssec =
-        if cfg.dnssec
-        then "true"
-        else "false";
-      domains = ["~."];
-      fallbackDns = cfg.nameservers;
-      dnsovertls = cfg.dnsovertls;
+      settings.Resolve = {
+        DNSOverTLS = cfg.dnsovertls;
+        dnssec =
+          if cfg.dnssec
+          then "true"
+          else "false";
+        domains = ["~."];
+        fallbackDns = cfg.nameservers;
+      };
     };
   };
 }

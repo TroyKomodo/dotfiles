@@ -25,8 +25,8 @@ in {
         gs = "git status";
         gd = "git diff";
         gl = "git lg";
-        vim = "nvim";
-        vi = "nvim";
+        vim = "hx";
+        vi = "hx";
         ls = "eza";
         cat = "bat";
         ".." = "cd ..";

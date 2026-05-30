@@ -34,9 +34,9 @@ in {
     programs.ssh = {
       enable = true;
       enableDefaultConfig = false;
-      matchBlocks."*" = {
-        forwardAgent = cfg.forwardAgent;
-        addKeysToAgent = "yes";
+      settings."*" = {
+        ForwardAgent = cfg.forwardAgent;
+        AddKeysToAgent = "yes";
       };
     };
 

@@ -1,7 +1,6 @@
 {
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
-    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
 
     x1e-nixos-config = {
       url = "github:kuruczgy/x1e-nixos-config";
@@ -9,7 +8,7 @@
     };
 
     home-manager = {
-      url = "github:nix-community/home-manager/release-25.11";
+      url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -75,7 +74,6 @@
     nix-ld,
     envfs,
     nix-your-shell,
-    nixpkgs-unstable,
     nix-index-database,
     technorino,
     lix-module,
@@ -89,18 +87,31 @@
       system,
       extraModules ? [],
     }: let
-      pkgs-unstable = import nixpkgs-unstable {
-        inherit system;
-        config.allowUnfree = true;
-      };
       pkgs = import nixpkgs {
         inherit system;
         config.allowUnfree = true;
         overlays = [
           nix-your-shell.overlays.default
           (final: prev: {
-            vscode = pkgs-unstable.vscode;
-            sbctl = pkgs-unstable.sbctl.overrideAttrs (old: {
+            # Patch open-bar to declare GNOME 50 support (neuromorph/openbar#165).
+            gnomeExtensions =
+              prev.gnomeExtensions
+              // {
+                open-bar = prev.gnomeExtensions.open-bar.overrideAttrs (old: {
+                  patches =
+                    (old.patches or [])
+                    ++ [
+                      (final.fetchpatch {
+                        name = "openbar-gnome50.patch";
+                        url = "https://github.com/neuromorph/openbar/commit/c6722239f9e6d5b1118dc2ca91cd9c2874272a29.diff";
+                        stripLen = 1;
+                        hash = "sha256-AElMTjJkMpuXejrG/6sunKMROo9b4Fq/mOoM6aHrSd4=";
+                      })
+                    ];
+                });
+              };
+
+            sbctl = prev.sbctl.overrideAttrs (old: {
               version = "0.19-unstable-2026-xx-xx";
               src = final.fetchFromGitHub {
                 owner = "troykomodo";
@@ -125,12 +136,15 @@
             ({
               pkgs,
               lib,
+              config,
               ...
             }: {
               nix.package = lib.mkForce (pkgs.lix.overrideAttrs (old: {
                 doCheck = false;
                 doInstallCheck = false;
               }));
+
+              fileSystems."/bin".fsType = "none";
             })
             nix-ld.nixosModules.nix-ld
             envfs.nixosModules.envfs
